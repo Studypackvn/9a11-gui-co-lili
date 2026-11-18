@@ -1,0 +1,74 @@
+name: Import verified class website
+on:
+  push:
+    paths:
+      - '.github/workflows/import-site.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Copy original website and verify each file
+        if: ${{ hashFiles('index.html') == '' }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p photos
+          cat > "$RUNNER_TEMP/files.sha256" <<'CHECKSUMS'
+          87979adbfc64e876bdd3daacccbf1afaeca3dad629fb95f836bd49e782afd00b  gifts.js
+          5836d1f90234af4fbe06c21e1784d77701b09e8573adcb4eb4013360eea9c333  letters.js
+          4af08c1e8abe8c7d99b53bf30b042f40502521d44b45e24d6da867bbafe92d75  room.svg
+          0883c7ae1fdcc228dff9260e351ac5f771c67bafb3f8cad1138c0c336ba0f65d  studio.js
+          05d587c7c3b0c608b8acd6476c9896b1ba3fa4ff4d961043cca53829b0b26a36  style.css
+          518f3f1247f71ed33a8870432504bfe6cd1e380e1640b09a3fb892645e57930e  photos/01.jpg
+          989a7bb1ca8c1bd01d0333b9f1f926ec8c3a6663f8baaf527b8c6d80c33b6fd8  photos/02.jpg
+          d67fa589a1aeabe7652de4b3a156ed4f3ba60d39f0d9b5d812bf643212d5ce3c  photos/03.jpg
+          9bf7f546229f98b1375615d2d431d00153f041a99edb281c538a29a415e14e77  photos/04.jpg
+          3a0eef8a4faccec9d554a3ee9a72ea950f661eff6471787ea4becbef7ef8e592  photos/05.jpg
+          81b2c1ab274f2b92098248197e8cae382bef263884d4b5da1ac84cfec0c36096  photos/06.jpg
+          fb6f98031ed42ea4946928dd24993abf0b44cf6de87abee5996dbfc91c03a53c  photos/07.jpg
+          d20b2cccb6a6aa6ecb4f71919a0158cec1c297635c6d13b735460cdb3ac2ec81  photos/08.jpg
+          e11ca210285c2b2a202c9e3cf4453a24f68c7c512412103395d4d8a2d72439af  photos/09.jpg
+          61052474d589dd1b5f9355fe4ab7855db92a077440b4999ff4e8d8654834ad84  photos/10.jpg
+          dc977211f3b765ada04fe70f83cc112d82004adc2a177d1c23be3162a3323be3  photos/11.jpg
+          eade4f6f32862f27c4be6db274d3580cbb14a9754a2e6234551770af542787a8  photos/12.jpg
+          efca627276aae8e5b000349189922dbc07b4c89335dc46287145275902e0b1f2  photos/13.jpg
+          7f2ceddb9119eced8fdb9143e43ed2fc68ed76aaf10aa14f8fb9b04bf749e1f8  photos/14.jpg
+          17a1889c496357b913b99e7df6345c79294e5c26f3bbcb6a18d50e1a905f7a67  photos/15.jpg
+          58aa23b50d11cf5456522277f2adba1e2ee377cee516e47fc87825a02695aacb  photos/16.jpg
+          3d473af9606a2fd1c3e568d120119cb2c5d73d8dd00a8356c51516406942f44c  photos/17.jpg
+          ac2628cf461d75b0cb879960d078cf0763857e9a63473b90deceae84a5b6730b  photos/18.jpg
+          ab4f29eabaa6a05414a5f55a86dcdc7c7098bc152127b48dfadc5f795edf2691  photos/19.jpg
+          5f7239354df6463b70a8c257b831b69cfb4c498325feae4046f0c824ba6ab6e8  photos/20.jpg
+          57d762ee56466af2ee202b1f24dcc38ca564c4ec70541a32c7a2e8ac15f01cb2  photos/21.jpg
+          69b3081ace8c6bb8659fc4897b06a872690410f47acbfe46b6cd459d9ebade05  photos/22.jpg
+          84e4a783e0495df4b2a3e422b1ed223798097b96db215268d21f55204c401f5f  photos/23.jpg
+          f00322c235ecb08cf6c5f0aad558eea918dab34d1b2fc66f445d0fa773879790  photos/24.jpg
+          73eaad3298bd14b2210bbe61579aca3c88a934b07706f9fcc859ab82b24073ee  photos/25.jpg
+          284ea79654b1edfd772cc17f19c0626d1c473fac313feb01ff9c9b17da51da91  photos/26.jpg
+          6401b9e0f3d71b51e61651b9f02c67988e4e96d641f35b2f3740d4e9b3bf1752  photos/27.jpg
+          6eacfc8cb3e6b92b809fe36059d754bc682f85aeebedafaf3857e7b95a2a3c5b  photos/28.jpg
+          72462063bc0c129b162ace4b79a3e2f14c25c5c63dafc6864a904701874e3430  photos/29.jpg
+          b841d68b6ec851014fd845f07282e1004949afbce8dbf84987020528bda94c8e  photos/30.jpg
+          81ab1d14b7b3b41c65e476ce7e5a4d036c0e8aa4367d749891ebe546eff4e8af  photos/31.jpg
+          9f869ab972220b710dde92bd7657b41a5dead7fcf0c249dc38f609fe7cc1fcec  photos/32.jpg
+          2ef09aced6308e85fd46bcedf68de13d9fb8479745d81d85cef6403d28edeb9e  photos/33.jpg
+          b3a55fa6a506bf5c0e782688316eea2103962292683e3276bf3a37e7420e3837  photos/34.jpg
+          6e37f1c11d867ca46c5f950677ad558b6f990466b5677a10f25372d5b2d538b6  photos/35.jpg
+          34e0307bac6ba0e3fe4ef6d4c506acf8eb8722a705aa146e20789eca91354fce  photos/36.jpg
+          CHECKSUMS
+          base='https://lop-9a11-gui-co-lili.thay-cao-anh-2600.chatgpt.site'
+          while read -r digest file; do
+            curl --fail --show-error --silent --location --retry 3 --max-time 60 "$base/$file" -o "$file"
+          done < "$RUNNER_TEMP/files.sha256"
+          sha256sum -c "$RUNNER_TEMP/files.sha256"
+          echo 'PCFkb2N0eXBlIGh0bWw+PGh0bWwgbGFuZz0idmkiPjxoZWFkPjxtZXRhIGNoYXJzZXQ9InV0Zi04Ij48bWV0YSBuYW1lPSJ2aWV3cG9ydCIgY29udGVudD0id2lkdGg9ZGV2aWNlLXdpZHRoLGluaXRpYWwtc2NhbGU9MSI+PG1ldGEgbmFtZT0idGhlbWUtY29sb3IiIGNvbnRlbnQ9IiNmZmY5ZjciPjx0aXRsZT5ExrDhu5tpIHTDoW4gdGjDtG5nIMK3IEfhu61pIGPDtCBMaWxpPC90aXRsZT48bGluayByZWw9InN0eWxlc2hlZXQiIGhyZWY9InN0eWxlLmNzcyI+PC9oZWFkPjxib2R5Pgo8aGVhZGVyPjxoMT5RdcOgIG5o4buPIDxpPmfhu61pIGPDtCBMaWxpLjwvaT48L2gxPjxuYXY+PGJ1dHRvbiBpZD0icHJlcGFyZSI+U2/huqFuIHF1w6A8L2J1dHRvbj48YnV0dG9uIGlkPSJyZXBsYXkiIGhpZGRlbj5DaGnhur91IHBoaW08L2J1dHRvbj48YnV0dG9uIGlkPSJhcmNoaXZlIj7inIkgJm5ic3A7IFRoxrAgxJHDoyBt4bufICg8c3BhbiBpZD0idG90YWwiPjA8L3NwYW4+KTwvYnV0dG9uPjxidXR0b24gaWQ9InJlc2V0R2lmdHMiIHRpdGxlPSLEkMawYSB04bqldCBj4bqjIGjhu5lwIHF1w6AgduG7gSBkxrDhu5tpIGPDonkiPsSQ4bq3dCBs4bqhaSBxdcOgPC9idXR0b24+PGJ1dHRvbiBpZD0iZXhwYW5kIiBoaWRkZW4gYXJpYS1sYWJlbD0iQuG6rXQgdG/DoG4gbcOgbiBow6xuaCIgdGl0bGU9IkLhuq10IHRvw6BuIG3DoG4gaMOsbmgiPjxzdmcgYXJpYS1oaWRkZW49InRydWUiIHdpZHRoPSIxNyIgaGVpZ2h0PSIxNyIgdmlld0JveD0iMCAwIDIwIDIwIiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjciPjxwYXRoIGQ9Ik0yIDhWMmg2bTQgMGg2djZtMCA0djZoLTZtLTQgMEgydi02Ii8+PC9zdmc+PC9idXR0b24+PC9uYXY+PC9oZWFkZXI+CjxtYWluPjxzZWN0aW9uIGNsYXNzPSJzY2VuZSIgYXJpYS1sYWJlbD0iQ8SDbiBuaMOgIEdpw6FuZyBzaW5oIj48ZGl2IGNsYXNzPSJzdGFnZSI+PGltZyBjbGFzcz0icm9vbSIgc3JjPSJyb29tLnN2ZyIgYWx0PSJDw6J5IHRow7RuZyBnaeG7r2EgY8SDbiBwaMOybmcgaG/huqF0IGjDrG5oLCBj4bqhbmggY+G7rWEgc+G7lSB0dXnhur90IHbDoCBsw7Igc8aw4bufaSI+PGJ1dHRvbiBpZD0ibWFudGVsRnJhbWUiIGFyaWEtbGFiZWw9IlBow6F0IHZpZGVvIGPhu6dhIGzhu5twIiB0aXRsZT0iUGjDoXQgdmlkZW8gY+G7p2EgbOG7m3AiPjxzdmcgYXJpYS1oaWRkZW49InRydWUiIHZpZXdCb3g9IjAgMCA3MiA0MSI+PHBhdGggZD0iTTIgMmg2OHYzN0gyeiIgZmlsbD0iIzk4NjEzZCIgc3Ryb2tlPSIjNjQ0MTJmIiBzdHJva2Utd2lkdGg9IjIiLz48cGF0aCBkPSJNNiA2aDYwdjI5SDZ6IiBmaWxsPSIjZmZlMmFiIi8+PHBhdGggZD0iTTkgOWg1NHYyM0g5eiIgZmlsbD0iIzg5YmNjYSIvPjxjaXJjbGUgY3g9IjUzIiBjeT0iMTQiIHI9IjMiIGZpbGw9IiNmZmRmOGEiLz48cGF0aCBkPSJtOSAyOCAxNi0xNSAxNSAxNSAxMy0xMCAxMCAxMHY0SDl6IiBmaWxsPSIjNDQ4NTcyIi8+PGNpcmNsZSBjeD0iMzYiIGN5PSIyMCIgcj0iOSIgZmlsbD0iIzIwNTE0NiIvPjxwYXRoIGQ9Im0zNCAxNSA3IDUtNyA1eiIgZmlsbD0iI2ZmZjRkNiIvPjwvc3ZnPjwvYnV0dG9uPjxkaXYgaWQ9InBpbGUiPjwvZGl2PjwvZGl2PjxkaXYgaWQ9ImluZG9vclNub3ciIGFyaWEtaGlkZGVuPSJ0cnVlIj48L2Rpdj48L3NlY3Rpb24+PC9tYWluPgo8Zm9vdGVyPjxzcGFuPkNo4bqhbSB2w6BvIHF1w6AgxJHhu4MgbeG7nyB0aMawPC9zcGFuPjxiIGlkPSJyZW1haW5pbmciIGFyaWEtbGl2ZT0icG9saXRlIj48L2I+PC9mb290ZXI+CjxkaWFsb2cgaWQ9InN0YXJ0U2NyZWVuIiBhcmlhLWxhYmVsPSJC4bqvdCDEkeG6p3UiPjxidXR0b24gdHlwZT0iYnV0dG9uIiBpZD0iZW50ZXJSb29tIiBhdXRvZm9jdXM+U3RhcnQ8L2J1dHRvbj48L2RpYWxvZz4KPGRpYWxvZyBpZD0iY2FyZCIgYXJpYS1sYWJlbGxlZGJ5PSJ0aXRsZSI+PGZvcm0gbWV0aG9kPSJkaWFsb2ciPjxidXR0b24gYXJpYS1sYWJlbD0ixJDDs25nIj7DlzwvYnV0dG9uPjwvZm9ybT48ZGl2IGNsYXNzPSJlbnZlbG9wZSIgYXJpYS1oaWRkZW49InRydWUiPjxzdmcgdmlld0JveD0iMCAwIDY2IDQ4IiB3aWR0aD0iNjYiIGhlaWdodD0iNDgiPjxwYXRoIGQ9Ik02IDIyIDMyIDRsMjggMTh2MjNINnoiIGZpbGw9IiNkN2EyNjkiLz48ZyBjbGFzcz0ibm90ZVJpc2UiPjxyZWN0IHg9IjE0IiB5PSIxMyIgd2lkdGg9IjM4IiBoZWlnaHQ9IjI3IiByeD0iMiIgZmlsbD0iI2ZmZjhlNiIgc3Ryb2tlPSIjZDhiZmEwIi8+PHBhdGggZD0iTTIxIDIwaDIzbS0yMyA1aDE2IiBzdHJva2U9IiNiZDliN2UiLz48L2c+PHBhdGggZD0iTTYgMjIgMzIgMzZsMjgtMTR2MjNINnoiIGZpbGw9IiNkY2FhNzAiLz48cGF0aCBkPSJtNiA0NSAyMi0xNW0zMiAxNUwzOCAzMCIgc3Ryb2tlPSIjYmE4NjViIiBmaWxsPSJub25lIi8+PGNpcmNsZSBjeD0iMzMiIGN5PSIzNCIgcj0iNSIgZmlsbD0iI2E3Mzc0YSIvPjwvc3ZnPjwvZGl2PjxzbWFsbCBpZD0ic3RhbXAiPjwvc21hbGw+PGgyIGlkPSJ0aXRsZSI+PC9oMj48aW1nIGlkPSJwaG90byIgYWx0PSLhuqJuaCBr4bu3IG5p4buHbSBj4bunYSBs4bubcCIgaGlkZGVuPjxwIGlkPSJib2R5Ij48L3A+PHNlY3Rpb24gaWQ9ImNvbGxlY3Rpb24iPjwvc2VjdGlvbj48YnV0dG9uIGlkPSJlZGl0R2lmdCIgaGlkZGVuPlPhu61hIOG6o25oIHbDoCBs4budaSBuaOG6r248L2J1dHRvbj48YnV0dG9uIGlkPSJmb2xkIj5H4bqlcCB0aMawIGzhuqFpIOKZoTwvYnV0dG9uPjwvZGlhbG9nPjxkaWFsb2cgaWQ9ImVkaXRvciIgYXJpYS1sYWJlbGxlZGJ5PSJlZGl0b3JUaXRsZSI+PGZvcm0gbWV0aG9kPSJkaWFsb2ciPjxidXR0b24gYXJpYS1sYWJlbD0ixJDDs25nIHBo4bqnbiBzb+G6oW4iPsOXPC9idXR0b24+PC9mb3JtPjxzbWFsbD5QSOG6pk4gMSDCtyAzNiBNw5NOIFFVw4A8L3NtYWxsPjxoMiBpZD0iZWRpdG9yVGl0bGUiPlNv4bqhbiBxdcOgPC9oMj48bGFiZWw+SOG7mXAgcXXDoCA8c2VsZWN0IGlkPSJwaWNrR2lmdCI+PC9zZWxlY3Q+PC9sYWJlbD48bGFiZWw+4bqibmggdHJvbmcgaOG7mXA8aW5wdXQgaWQ9ImNob29zZVBob3RvIiB0eXBlPSJmaWxlIiBhY2NlcHQ9ImltYWdlLyoiPjwvbGFiZWw+PGltZyBpZD0idGh1bWIiIGFsdD0i4bqibmggxJHDoyBjaOG7jW4iIGhpZGRlbj48bGFiZWw+TOG7nWkgbmjhuq9uPHRleHRhcmVhIHJvd3M9IjUiIGlkPSJkcmFmdCIgcGxhY2Vob2xkZXI9IkTDoW4gbOG7nWkgbmjhuq9uIGPhu6dhIGLhuqFuIHbDoG8gxJHDonnigKYiPjwvdGV4dGFyZWE+PC9sYWJlbD48YnV0dG9uIGlkPSJzYXZlR2lmdCI+TMawdSBo4buZcCBxdcOgPC9idXR0b24+PGhyPjxsYWJlbD5WaWRlbyBzYXUgaOG7mXAgY3Xhu5FpPGlucHV0IGlkPSJjaG9vc2VWaWRlbyIgdHlwZT0iZmlsZSIgYWNjZXB0PSJ2aWRlby8qIj48L2xhYmVsPjxzcGFuIGlkPSJ2aWRlb05hbWUiPjwvc3Bhbj48YnV0dG9uIGlkPSJwcmV2aWV3TW92aWUiPlRo4butIG3DoG4gY2hp4bq/dTwvYnV0dG9uPiA8YnV0dG9uIGlkPSJkb3dubG9hZFNob3ciPlThuqNpIGLhuqNuIHThurduZyBjw7Q8L2J1dHRvbj48cCByb2xlPSJzdGF0dXMiIGlkPSJzYXZlZCI+PC9wPjwvZGlhbG9nPgo8ZGlhbG9nIGlkPSJjaW5lbWEiIGFyaWEtbGFiZWw9Ik3DoG4gY2hp4bq/dSBj4bunYSBs4bubcCI+PGRpdiBjbGFzcz0icHJvamVjdG9yIj48ZGl2IGNsYXNzPSJyb2xsZXIiPjwvZGl2PjxzZWN0aW9uIGNsYXNzPSJjYW52YXMiPjx2aWRlbyBpZD0iZmlsbSIgY29udHJvbHMgcGxheXNpbmxpbmUgcHJlbG9hZD0ibWV0YWRhdGEiPjwvdmlkZW8+PHAgaWQ9Im1vdmllTm90ZSI+PC9wPjxidXR0b24gaGlkZGVuIGlkPSJwbGF5RmlsbSI+4pa2IFBow6F0IHZpZGVvPC9idXR0b24+PC9zZWN0aW9uPjwvZGl2PjxidXR0b24gaWQ9ImxlYXZlRmlsbSI+VHLhu58gduG7gSBjxINuIHBow7JuZzwvYnV0dG9uPjwvZGlhbG9nPgo8c2NyaXB0IHNyYz0ibGV0dGVycy5qcyI+PC9zY3JpcHQ+PHNjcmlwdCBzcmM9ImdpZnRzLmpzIj48L3NjcmlwdD48c2NyaXB0IHNyYz0ic3R1ZGlvLmpzIj48L3NjcmlwdD48L2JvZHk+PC9odG1sPgo=' | base64 --decode > index.html
+          touch .nojekyll
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add .nojekyll index.html style.css gifts.js letters.js studio.js room.svg photos
+          git commit -m 'Publish the class website with 36 photos and letters'
+          git push origin HEAD:main
